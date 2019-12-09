@@ -1,0 +1,19 @@
+{
+  "name": "aws_lambda_lab",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://cheonsoo@github.com/cheonsoo/AWS_LAMBDA_LAB.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cheonsoo/AWS_LAMBDA_LAB/issues"
+  },
+  "homepage": "https://github.com/cheonsoo/AWS_LAMBDA_LAB#readme"
+}
