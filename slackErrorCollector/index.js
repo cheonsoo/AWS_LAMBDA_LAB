@@ -1,40 +1,51 @@
 const request = require('request-promise-native')
 
+const appVersion = '1.0.33';
+
 exports.handler = async (event, context) => {
+  let doc = {};
+  try {
+    const slackMessage = event.text ? event.text : "";
+    const errType = slackMessage.split('(')[0].replace('ERROR - ', '').replace('(', '').trim();
 
-  console.log('#####');
-  console.log(event.channel_id);
-  console.log(event.text);
-  console.log('#####');
-  // console.log(JSON.parse(event).body.key1);
-
-  const data = {
-    "token": "BTsx8b1gBTLTTwLQ8ouN7Pya",
-    "team_id": "T0001",
-    "team_domain": "example",
-    "channel_id": "C2147483705",
-    "channel_name": "test",
-    "timestamp": "1355517523.000005",
-    "user_id": "U2147483697",
-    "user_name": "Steve",
-    "text": "googlebot: What is the air-speed velocity of an unladen swallow?",
-    "trigger_word": "googlebot:"
-  };
+    doc = {
+      "token": event.token ? event.token : "",
+      "team_id": event.team_id ? event.team_id : "",
+      "team_domain": event.team_domain ? event.team_domain : "",
+      "channel_id": event.channel_id ? event.channel_id : "",
+      "channel_name": event.channel_name ? event.channel_name : "",
+      "timestamp": event.timestamp ? event.timestamp : "",
+      "date": new Date(),
+      "user_id": event.user_id ? event.user_id : "",
+      "user_name": event.user_name ? event.user_name : "",
+      "errType": errType,
+      "text": slackMessage,
+      "trigger_word": event.trigger_word ? event.trigger_word : ""
+    };
+  } catch (err) {
+    console.log(err.message);
+    return {
+      version: appVersion,
+      statusCode: 500,
+      event : event,
+      message: err.message
+    };
+  }
 
   const url = `http://ec2-18-217-222-56.us-east-2.compute.amazonaws.com:9201/monitoring/slack`;
   const options = {
     url: url,
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: event,
+    body: doc,
     json: true
   };
   const res = await request(options);
 
   const response = {
+    version: appVersion,
     statusCode: 200,
-    body: event,
-    context: context ? context : {},
+    // event : event,
     res: res
   };
   return response;
